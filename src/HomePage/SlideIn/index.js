@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import Observer from "./IntersectionObserver";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 
-export default function SlideIn() {
+export default function SlideIn({ ClickHandler }) {
   const ref = useRef();
   // Call the hook passing in ref and root margin
   // In this case it would only be considered onScreen if more ...
@@ -15,7 +15,7 @@ export default function SlideIn() {
         style={{
           color: "#d81b60",
           textAlign: " center",
-          fontSize: "calc(2vh * 3.4)"
+          fontSize: "calc(2vh * 3.4)",
         }}
       >
         How it works
@@ -24,7 +24,7 @@ export default function SlideIn() {
         ref={ref}
         style={{
           height: "45vh",
-          color: onScreen ? "black" : "#d81b60"
+          color: onScreen ? "black" : "#d81b60",
         }}
       >
         {onScreen ? (
@@ -62,11 +62,13 @@ export default function SlideIn() {
       </div>
       <div
         style={{
-          textAlign: " center"
+          textAlign: " center",
         }}
       >
-        <Link to="/Quiz">
-          <button className="loading-button">Get Started</button>
+        <Link to="/quiz">
+          <button className="loading-button" onClick={ClickHandler}>
+            Get Started
+          </button>
         </Link>
       </div>
     </div>

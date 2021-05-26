@@ -194,7 +194,7 @@ h3 {
   margin: 1em 0 0 0;
   width: 5em;
 }
-/* pink for restart button*/
+/* pink for skip, next, and restart button*/
 .restart {
   --c: #f48fb1;
   color: var(--c);
@@ -357,7 +357,7 @@ a {
   box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
 }
 
-/* ================================= 
+/* =================================
   Media Queries
 ==================================== */
 

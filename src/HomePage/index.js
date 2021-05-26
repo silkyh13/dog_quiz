@@ -1,7 +1,14 @@
 import React from "react";
+import ReactGa from "react-ga";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import SlideIn from "./SlideIn";
-export default function LoadingPage({ setLoading }) {
+export default function LoadingPage() {
+  const ClickHandler = () => {
+    ReactGa.event({
+      category: "Button",
+      action: "Clicked the 'Get Started' button",
+    });
+  };
   return (
     <div className="home-page">
       <div id="loader">
@@ -13,13 +20,15 @@ export default function LoadingPage({ setLoading }) {
             think you can name them all? Test your knowledge with this quiz.
           </p>
           <div className="home-button">
-            <Link to="/Quiz">
-              <button className="loading-button">Get Started</button>
+            <Link to="/quiz">
+              <button className="loading-button" onClick={ClickHandler}>
+                Get Started
+              </button>
             </Link>
           </div>
         </div>
       </div>
-      <SlideIn />
+      <SlideIn ClickHandler={ClickHandler} />
       <div id="main-footer">
         <p>Dogs Quiz &copy; 2020, All Rights Reserved</p>
       </div>

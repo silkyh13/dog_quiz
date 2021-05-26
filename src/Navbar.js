@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import App from "./App";
 import LoadingPage from "./Loading";
-export default function Navbar({ setLoading }) {
+export default function Navbar() {
   return (
     <Router>
       <div>
@@ -11,18 +11,10 @@ export default function Navbar({ setLoading }) {
             <a href="Home">Dog Quiz</a>
           </h1>
           <ul className="main-nav">
-            <li
-              onClick={e => {
-                setLoading(true);
-              }}
-            >
+            <li>
               <Link to="/LoadingPage">Home</Link>
             </li>
-            <li
-              onClick={e => {
-                setLoading(false);
-              }}
-            >
+            <li>
               <Link to="/App">Quiz</Link>
             </li>
           </ul>

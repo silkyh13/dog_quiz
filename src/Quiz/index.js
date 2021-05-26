@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import ReactGa from "react-ga";
 export default function Quiz({
   correct,
   wrong,
@@ -12,10 +12,24 @@ export default function Quiz({
   setSpinner,
   setRestart,
   restart,
-  makeTestSet
+  makeTestSet,
 }) {
   const [currIndex, setCurrIndex] = useState(0);
   const [translateVal, setTranslateVal] = useState(0);
+  const [timeStart, setTimeStart] = useState(new Date());
+  const handleTimeDiff = () => {
+    var timeEnd = new Date();
+    var timeDiff = timeEnd - timeStart;
+    // console.log(timeDiff / 1000);
+    ReactGa.timing({
+      category: "User chose an answer",
+      variable: "choice-button",
+      value: timeDiff, // in milliseconds
+    });
+  };
+  const resetTimeStart = () => {
+    setTimeStart(new Date());
+  };
   let questionDiv = [];
 
   if (selected.length) {
@@ -34,7 +48,8 @@ export default function Quiz({
               ? "correct"
               : "wrong")
           }
-          onClick={e => {
+          onClick={(e) => {
+            handleTimeDiff();
             if (!done) {
               handleValue(selected[i].name, item.name);
             }
@@ -75,6 +90,7 @@ export default function Quiz({
       setTranslateVal(translateVal + -widthOfQuestionItem());
       setDone(false);
     }
+    resetTimeStart();
   };
   return (
     <div className="main-flex-container">
@@ -91,8 +107,9 @@ export default function Quiz({
       <div className="content-container">
         <div id="wrapper">
           <div
+            className="moving-questions"
             style={{
-              transform: `translateX(${translateVal}px)`
+              transform: `translateX(${translateVal}px)`,
             }}
           >
             {questionDiv}

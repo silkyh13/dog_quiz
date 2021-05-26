@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Quiz from "./Quiz";
-import LoadingPage from "./Loading";
-import Results from "./Results";
-import CheatSheet from "./CheatSheet";
+import Quiz from "./Quiz/index";
+import LoadingPage from "./HomePage";
+import Results from "./Results/index";
+import CheatSheet from "./CheatSheet/index";
 import "./styles.css";
-
+import ReactGa from "react-ga";
 export default function App() {
   const [testSet, setTestSet] = useState([]);
   const [correct, setCorrect] = useState(0);
@@ -19,6 +19,9 @@ export default function App() {
   const [dogSet, setDogSet] = useState([]);
   const [gotImages, setGotImages] = useState(false);
   useEffect(() => {
+    ReactGa.initialize("UA-197820733-1");
+    //report pageview tell google analytics im on a webpage
+    ReactGa.pageview(window.location.pathname + window.location.search);
     getDogSet();
     newGame();
   }, []);
@@ -92,17 +95,9 @@ export default function App() {
   //sorting by height and saving it in state called size
   const sortByHeight = (dogData) => {
     function groupBy(arr, property) {
-      /** arr = array of
-      {
-        id: 1,
-        name: "Affenpinscher",
-        url: "https://cdn2.thedogapi.com/images/hd1iiHXjK.jpg"
-        height: {imperial: "9 - 11.5", metric: "23 - 29"}
-      }
-      **/
-      return arr.reduce(function (memo, curr) {
+      return arr.reduce(function (memo, x) {
         //check of height is more than 18
-        const size = curr[property].imperial.split("-")[0];
+        const size = x[property].imperial.split("-")[0];
         let group = null;
         if (size < 12) {
           group = "small";
@@ -114,12 +109,17 @@ export default function App() {
         if (!memo[group]) {
           memo[group] = [];
         }
-        memo[group].push(curr);
+        memo[group].push(x);
         return memo;
       }, {});
     }
     var o = groupBy(dogData, "height");
-    //o = {large: [{}, {}], {small: [{}]... }
+    console.log(
+      "what does small set look like?",
+      o.small[0],
+      o.medium[0],
+      o.large[0]
+    );
     setSize(o);
   };
   //choose set of 10 and 4 answers
@@ -187,22 +187,19 @@ export default function App() {
           </h1>
           <ul className="main-nav">
             <li>
-              <Link to="/Quiz">Quiz</Link>
+              <Link to="/quiz">Quiz</Link>
             </li>
             <li onClick={handleNewGame}>
-              <Link to="/CheatSheet">Dog Breeds</Link>
+              <Link to="/cheat-sheet">Dog Breeds</Link>
             </li>
           </ul>
         </div>
 
         <Switch>
-          <Route path="/CheatSheet">
+          <Route path="/cheat-sheet">
             <CheatSheet size={size} grouped={grouped} />
           </Route>
-          <Route path="/LoadingPage">
-            <LoadingPage />
-          </Route>
-          <Route path="/Quiz">
+          <Route path="/quiz">
             <Quiz
               correct={correct}
               wrong={wrong}
